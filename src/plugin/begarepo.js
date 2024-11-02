@@ -7,7 +7,7 @@ const searchRepo = async (m, Matrix) => {
   const prefix = prefixMatch ? prefixMatch[0] : '/';
   const cmd = m.body.startsWith(prefix) ? m.body.slice(prefix.length).split(' ')[0].toLowerCase() : '';
 
-  const validCommands = ['menu', 'help', 'list'];
+  const validCommands = ['repo', 'sc', 'script'];
 
   if (validCommands.includes(cmd)) {
     const repoUrl = `https://api.github.com/repos/Kingbega/BARAKA-MD`;
@@ -31,15 +31,13 @@ const handleRepoCommand = async (m, Matrix, repoUrl) => {
       owner,
     } = repoData;
 
-    const messageText = `╭─────═━┈┈━═──━┈⊷
-┇ _ʙᴏᴛ ɴᴀᴍᴇ_ : *_ʙᴀʀᴀᴋᴀ-ᴍᴅ_*
-┇ _ᴠᴇʀꜱɪᴏɴ_ : *_7.1.0_*     
-┇ _ᴘʟᴀᴛғᴏʀᴍ_ : *_ʟɪɴᴜx_*
-┇ _ᴅᴇᴠ_ : *_ᴍʀ ʙᴀʀᴀᴋᴀ_*
-┇ _ʀᴀᴍ_ : *_20GB.14GB_*
-┇ _ᴅᴀɪʟʏ ᴜsᴇʀs_ : *${forks_count}*
-┇ _ᴄʀᴇᴀᴛᴇᴅ ᴏɴ_ : *${new Date(created_at).toLocaleDateString()}*
-╰─────═━┈┈━═──━┈⊷ 
+    const messageText = `*_BARAKA MD GITHUB INFORMATION_*\n
+*_Name:_* ${name}
+*_Stars:_* ${stargazers_count}
+*_Forks:_* ${forks_count}
+*_Created At:_* ${new Date(created_at).toLocaleDateString()}
+*_Last Updated:_* ${new Date(updated_at).toLocaleDateString()}
+*_Owner:_* *_Baraka Bega_*
     `;
 
     const repoMessage = generateWAMessageFromContent(m.from, {
@@ -54,7 +52,7 @@ const handleRepoCommand = async (m, Matrix, repoUrl) => {
               text: messageText,
             }),
             footer: proto.Message.InteractiveMessage.Footer.create({
-              text: '𝗕𝗘𝗦𝗧 𝗪𝗛𝗔𝗧𝗦𝗔𝗣𝗣 𝗕𝗢𝗧\n\n𝗠𝗔𝗗𝗘 𝗕𝗬 𝗕𝗔𝗥𝗔𝗞𝗔 𝗕𝗘𝗚𝗔',
+              text: '*© Baraka Bega*',
             }),
             header: proto.Message.InteractiveMessage.Header.create({
               ...(await prepareWAMessageMedia({
@@ -70,38 +68,24 @@ const handleRepoCommand = async (m, Matrix, repoUrl) => {
             nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
               buttons: [
                 {
-                  name: 'quick_reply',
-                  buttonParamsJson: JSON.stringify({
-                    display_text: "📜 COMMAND LIST",
-                    id: ".command",
-                  }),
-                },
-                 {
-                  name: 'quick_reply',
-                  buttonParamsJson: JSON.stringify({
-                    display_text: "⏳ PING",
-                    id: ".ping",
-                  }),
-                },
-                {
                   name: 'cta_url',
                   buttonParamsJson: JSON.stringify({
-                    display_text: "📂 REPO",
+                    display_text: 'BOT REPO',
                     url: 'https://github.com/Kingbega/BARAKA-MD',
                   }),
                 },
                 {
-                 name: 'cta_url',
+                  name: 'cta_url',
                   buttonParamsJson: JSON.stringify({
-                    display_text: "📽 BOTS IMAGE",
-                    url: 'https://telegra.ph/file/346b2fb749a7255defe87.jpg',
+                    display_text: 'WHATSAPP CHANNEL',
+                    url: 'https://whatsapp.com/channel/0029Vail87sIyPtQoZ2egl1h',
                   }),
                 },
                 {
                   name: 'cta_url',
                   buttonParamsJson: JSON.stringify({
-                    display_text: "🛰 WHATSAPP CHANNEL",
-                    url: 'https://whatsapp.com/channel/0029Vail87sIyPtQoZ2egl1h',
+                    display_text: 'SUBSCRIBE ON YOUTUBE',
+                    url: 'https://www.youtube.com/@baraka-bega',
                   }),
                 },
               ],
@@ -119,11 +103,11 @@ const handleRepoCommand = async (m, Matrix, repoUrl) => {
     await Matrix.relayMessage(repoMessage.key.remoteJid, repoMessage.message, {
       messageId: repoMessage.key.id,
     });
-    await m.React('🦁');
+    await m.React('✅');
   } catch (error) {
     console.error('Error processing your request:', error);
     m.reply('Error processing your request.');
-    await m.React('🦁');
+    await m.React('❌');
   }
 };
 
